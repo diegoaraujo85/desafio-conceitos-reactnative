@@ -29,11 +29,14 @@ export default function App() {
   }, []);
 
   async function handleLikeRepository(id) {
-    api.post(`/repositories/${id}/like`).then((response) => {
-      loadRepositories();
-    });
-    // const repository = response.data;
-    // const repoIndex = repositories.findIndex(repository => repository.id === id);
+    const response = await api.post(`/repositories/${id}/like`);
+
+    if (response.status == 200) {
+      const repoIndex = repositories.findIndex((repo) => repo.id === id);
+      const newRepo = repositories.filter((rep) => rep.id !== id);
+      newRepo.splice(repoIndex, 0, response.data);
+      setRepositories(newRepo);
+    }
   }
 
   return (
@@ -66,11 +69,6 @@ export default function App() {
                   // Remember to replace "1" below with repository ID: {`repository-likes-${repository.id}`}
                   testID={`repository-likes-${repository.id}`}
                 >
-                  {/* {repository.likes === 0
-                    ? "Seja a primeira pessoa a curtir!"
-                    : repository.likes === 1
-                    ? `${repository.likes} curtida`
-                    : `${repository.likes} curtidas`} */}
                   {repository.likes <= 1
                     ? `${repository.likes} curtida`
                     : `${repository.likes} curtidas`}

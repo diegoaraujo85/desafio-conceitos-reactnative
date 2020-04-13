@@ -58,9 +58,8 @@ describe("Likes", () => {
     });
 
     await actWait();
-    console.log(getByTestId(`like-button-${repositoryId}`));
 
-    fireEvent.press(getByTestId(`like-button-${repositoryId}`));
+    const e = fireEvent.press(getByTestId(`like-button-${repositoryId}`));
 
     await actWait();
 
